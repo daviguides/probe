@@ -8,7 +8,7 @@
 
 Research context MUST be loaded before starting:
 
-@./probe/prompts/load-research-context.md
+@~/.claude/probe/prompts/load-research-context.md
 
 ---
 

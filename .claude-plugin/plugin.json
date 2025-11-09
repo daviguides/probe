@@ -1,0 +1,11 @@
+{
+  "name": "probe",
+  "version": "0.1.0",
+  "description": "A multi-spectrum research context architecture for deep technical investigation.",
+  "author": {
+      "name": "Davi Guides",
+      "url": "https://github.com/daviguides"
+  },
+  "repository": "https://github.com/daviguides/probe",
+  "license": "MIT"
+}

@@ -6,18 +6,18 @@
 
 ## Research Methodology (Normative)
 
-@./probe/spec/research-methodology-spec.md
-@./probe/spec/research-spectra-spec.md
-@./probe/spec/critical-questions-spec.md
-@./probe/spec/validation-spec.md
+@~/.claude/probe/spec/research-methodology-spec.md
+@~/.claude/probe/spec/research-spectra-spec.md
+@~/.claude/probe/spec/critical-questions-spec.md
+@~/.claude/probe/spec/validation-spec.md
 
 ## Applied Research Patterns (Practical)
 
-@./probe/context/research-patterns.md
-@./probe/context/anti-naive-guide.md
-@./probe/context/depth-calibration.md
-@./probe/context/critical-thinking-guide.md
-@./probe/context/examples.md
+@~/.claude/probe/context/research-patterns.md
+@~/.claude/probe/context/anti-naive-guide.md
+@~/.claude/probe/context/depth-calibration.md
+@~/.claude/probe/context/critical-thinking-guide.md
+@~/.claude/probe/context/examples.md
 
 ---
 

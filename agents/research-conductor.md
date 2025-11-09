@@ -48,7 +48,7 @@ This loads all Probe specs and context (SSOT reference pattern).
 ### Phase 2: Setup Research Environment
 
 Execute workflow:
-@./probe/prompts/setup-research-environment-workflow.md
+@~/.claude/probe/prompts/setup-research-environment-workflow.md
 
 **Actions**:
 1. Generate repo name: `./probe/scripts/generate-repo-name.sh "<topic>"`
@@ -61,7 +61,7 @@ Execute workflow:
 ### Phase 3: Conduct Multi-Spectrum Research
 
 Execute workflow:
-@./probe/prompts/conduct-research-workflow.md
+@~/.claude/probe/prompts/conduct-research-workflow.md
 
 **CRITICAL (Anti-Babysitting)**:
 - Execute ALL 10 spectra sequentially
