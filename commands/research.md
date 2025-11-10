@@ -7,15 +7,48 @@
 ## Usage
 
 ```
-/probe:research <topic>
+/probe:research <topic|url|text>
 ```
 
+**Input types**:
+- **Direct topic**: Single word/phrase (e.g., `lmcache`, `vector-databases`)
+- **URL**: Article/post to analyze (extracts topic, POV, and source bias)
+- **Text**: Question/statement (extracts topic and captures POV)
+- **Text + URL**: User context + supporting link
+- **Topic + POV**: Direct topic with `--pov` flag for explicit point of view
+
 **Examples**:
+
+**Direct topic**:
 ```
 /probe:research lmcache
-/probe:research llm-cache
 /probe:research vector-databases
-/probe:research langchain
+/probe:research multi-agent-systems
+```
+
+**URL (LinkedIn post, article, documentation)**:
+```
+/probe:research https://linkedin.com/posts/...lmcache-analysis
+/probe:research https://pub.towardsai.net/we-spent-47000-running-ai-agents
+/probe:research https://docs.vllm.ai/en/latest/
+```
+
+**Text only (question or statement)**:
+```
+/probe:research "Would caching help with multi-agent memory management?"
+/probe:research "For multi agent system, have we thought about context loss as info passes from agent to agent?"
+```
+
+**Text + URL**:
+```
+/probe:research "vLLM could be beneficial as we host open source models: https://docs.vllm.ai/"
+/probe:research "We need guardrails for long-running agents: https://pub.towardsai.net/article"
+```
+
+**Direct topic with POV**:
+```
+/probe:research lmcache --pov "I heard it's 15x faster"
+/probe:research vector-databases --pov "Stakeholder recommended for RAG"
 ```
 
 ---
@@ -23,12 +56,17 @@
 ## What This Does
 
 Launches autonomous research agent that:
-1. Creates local research directory + private GitHub repo
-2. Investigates topic across 10 research spectra
-3. Applies critical analysis (beyond marketing hype)
-4. Generates comprehensive research artifacts
-5. Commits and publishes to repository
-6. Returns key findings and recommendation
+1. **Extracts topic from input** (URL, text, or direct topic) and confirms with user
+2. **Captures POV** (Point of View) if provided - original claim, question, or assertion
+3. **Detects source BIAS** if applicable (LinkedIn hype, vendor marketing, etc.)
+4. Creates local research directory + private GitHub repo
+5. Investigates topic across 10 research spectra (or 11 for comparative research)
+6. Applies critical analysis (beyond marketing hype)
+7. Generates comprehensive research artifacts
+8. **Generates POV-ANALYSIS.md** (if POV exists) - dialogues with original claim/question
+9. **Generates BIAS-ANALYSIS.md** (if bias detected) - counter-balances source bias
+10. Commits and publishes to repository
+11. Returns key findings and recommendation
 
 **Research spectra** (all 10 investigated):
 1. Fundamentals - What it is, why it exists
@@ -42,9 +80,16 @@ Launches autonomous research agent that:
 9. Implementation - Code examples
 10. Critical FAQ - Honest Q&A
 
-**Output**:
+**Output artifacts**:
 - Local: `~/work/sources/researchs/research-<topic>/`
 - GitHub: Private repo `research-<topic>`
+- Files (always):
+  - `README.md` - Overview + key findings
+  - `RESEARCH.md` - Complete 10 (or 11) spectra
+  - `FAQ.md` - Critical questions
+- Files (conditional):
+  - `POV-ANALYSIS.md` - If POV provided (dialogues with original claim/question)
+  - `BIAS-ANALYSIS.md` - If bias detected (counter-balances source bias)
 - Summary: Key findings, recommendation, applicability
 
 ---

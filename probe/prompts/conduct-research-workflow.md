@@ -8,19 +8,30 @@
 
 Research context MUST be loaded before starting:
 
-@~/.claude/probe/prompts/load-research-context.md
+@./probe/prompts/load-research-context.md
 
 ---
 
 ## Input Parameters
 
-**Topic**: `<research-topic>` (e.g., "lmcache", "llm-cache", "vector-databases")
+**Input**: `<topic|url|text>` (various formats supported)
+- Direct topic: `lmcache`
+- URL: `https://linkedin.com/posts/...`
+- Text: `"Would caching help with multi-agent memory?"`
+- Text + URL: `"vLLM could help: [url]"`
+- Topic + POV: `lmcache --pov "I heard it's 15x faster"`
 
 **Context** (automatically detected or specified):
 - Familiarity level: Never heard / Vaguely familiar / Somewhat familiar / Expert
 - Research goal: Evaluation / Learning / Reporting / Comparison
 - Topic type: Specific tool / General concept / Comparison
 - Time constraint: Quick / Standard / Exhaustive
+
+**Extraction Output** (from Stage 0):
+- Topic (normalized slug)
+- POV (if exists)
+- BIAS (if detected)
+- Research mode (standard | comparative)
 
 ---
 
@@ -40,6 +51,46 @@ Research context MUST be loaded before starting:
 - Apply critical thinking at each stage
 - Surface limitations and honest assessments
 - ONLY stop when all spectra complete OR hard blocker encountered
+
+---
+
+## Stage 0: Topic Extraction (For Non-Direct Topics)
+
+**Skip this stage if**: Input is direct topic without --pov flag (e.g., `lmcache`)
+
+**Execute this stage if**: Input is URL, text, text+URL, or topic+--pov
+
+### Step 0.1: Execute Topic Extraction Workflow
+
+@./probe/prompts/extract-topic-from-input-workflow.md
+
+**Input**: Raw user input
+**Output**: Extraction object with:
+- `topic`: Normalized slug for research
+- `pov`: POV object (if exists)
+- `bias`: BIAS object (if detected)
+- `research_mode`: standard | comparative
+
+### Step 0.2: Confirm with User
+
+**Present extraction results**:
+- Detected topic
+- POV identified (if any)
+- BIAS detected (if any)
+- Research mode (comparative if "X vs Y")
+
+**Wait for user confirmation** before proceeding to Stage 1.
+
+**If user rejects**: Ask for correct topic, update extraction, re-confirm.
+
+### Step 0.3: Store Extraction Object
+
+**CRITICAL**: Extraction object is stored for later use:
+- Topic used for research scope (Stage 1)
+- POV and BIAS **ignored during research** (Stages 1-3)
+- POV and BIAS used **POST-research** (Stage 4) for analysis files
+
+**Proceed to Stage 1** (context detection).
 
 ---
 
@@ -380,29 +431,92 @@ Generate research summary:
 
 ## Stage 4: Output Generation
 
-### Step 4.1: Generate Research Files
+### Step 4.1: Generate Core Research Files
 
 Create structured research output (format flexible, but must include all 10 spectra).
 
-Minimum structure:
+**Always generate**:
 ```
 README.md - Overview, TL;DR, key findings
-RESEARCH.md - Complete multi-spectrum investigation
+RESEARCH.md - Complete multi-spectrum investigation (10 or 11 spectra)
 FAQ.md - Critical questions and answers
 ```
 
-### Step 4.2: Commit to Research Repository
+**For comparative research** (research_mode = comparative):
+- RESEARCH.md includes **Spectrum 11: Comparative Analysis**
+- Side-by-side comparison of both topics
+- Recommendations for choosing between them
+
+### Step 4.2: Generate POV-ANALYSIS.md (If POV Exists)
+
+**Trigger**: Check extraction object → `pov.exists = true`
+
+**Execute**:
+1. Reference extraction object for POV claims
+2. Reference RESEARCH.md for findings
+3. Generate POV-ANALYSIS.md following @./probe/spec/pov-bias-analysis-spec.md
+
+**Structure**:
+- Original POV reproduced
+- Claims extracted vs research findings
+- Assessment: ✅ confirmed | ❌ refuted | ⚠️ partially true
+- Answer to original question (if POV is question)
+- Summary: POV vs Reality
+- Recommendation in light of POV
+
+**CRITICAL**: Use research findings to assess POV claims
+- Do NOT re-research
+- Reference completed RESEARCH.md
+- Focus on claim validation
+
+### Step 4.3: Generate BIAS-ANALYSIS.md (If BIAS Detected)
+
+**Trigger**: Check extraction object → `bias.exists = true` AND bias is significant
+
+**Execute**:
+1. Reference extraction object for bias characteristics
+2. Reference RESEARCH.md for counter-balancing
+3. Generate BIAS-ANALYSIS.md following @./probe/spec/pov-bias-analysis-spec.md
+
+**Structure**:
+- Source type identified
+- Bias characteristics documented
+- What bias emphasized vs omitted
+- Counter-balancing: Complete picture from research
+- Adjusted perspective
+- What to trust vs verify vs ignore
+
+**CRITICAL**: Use research findings to counter-balance bias
+- Show what source omitted
+- Provide missing context
+- Balanced assessment
+
+### Step 4.4: Final Artifact Structure
+
+```
+research-<topic>/
+├── README.md              (always)
+├── RESEARCH.md            (always - 10 or 11 spectra)
+├── FAQ.md                 (always)
+├── POV-ANALYSIS.md        (if POV exists)
+└── BIAS-ANALYSIS.md       (if BIAS detected)
+```
+
+### Step 4.5: Commit to Research Repository
 
 Commit all research files to `~/work/sources/researchs/research-<topic>/`.
 
 Push to GitHub private repo `research-<topic>`.
 
-### Step 4.3: Report to User
+### Step 4.6: Report to User
 
 Return concise summary to user with:
 - Key findings (strengths, limitations, trade-offs)
 - Recommendation (adopt / don't adopt / alternative)
+- **POV assessment** (if POV existed): How POV aligned with reality
+- **Bias counter-balance** (if BIAS detected): What source missed
 - Link to research repository
+- List of generated files (including POV-ANALYSIS, BIAS-ANALYSIS if present)
 
 ---
 

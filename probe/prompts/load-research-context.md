@@ -6,18 +6,21 @@
 
 ## Research Methodology (Normative)
 
-@~/.claude/probe/spec/research-methodology-spec.md
-@~/.claude/probe/spec/research-spectra-spec.md
-@~/.claude/probe/spec/critical-questions-spec.md
-@~/.claude/probe/spec/validation-spec.md
+@./probe/spec/research-methodology-spec.md
+@./probe/spec/research-spectra-spec.md
+@./probe/spec/critical-questions-spec.md
+@./probe/spec/validation-spec.md
+@./probe/spec/topic-extraction-spec.md
+@./probe/spec/pov-bias-analysis-spec.md
 
 ## Applied Research Patterns (Practical)
 
-@~/.claude/probe/context/research-patterns.md
-@~/.claude/probe/context/anti-naive-guide.md
-@~/.claude/probe/context/depth-calibration.md
-@~/.claude/probe/context/critical-thinking-guide.md
-@~/.claude/probe/context/examples.md
+@./probe/context/research-patterns.md
+@./probe/context/anti-naive-guide.md
+@./probe/context/depth-calibration.md
+@./probe/context/critical-thinking-guide.md
+@./probe/context/source-bias-guide.md
+@./probe/context/examples.md
 
 ---
 
@@ -32,20 +35,27 @@ You now have complete Probe research methodology loaded.
 - 10 research spectra (multi-dimensional investigation)
 - Critical questions per spectrum (depth guardrails)
 - Validation criteria (completeness, depth, quality)
+- Topic extraction rules (URL, text, POV, BIAS)
+- POV and BIAS analysis standards (post-research)
 
 **Applied Knowledge**:
 - Research patterns (tool vs concept, familiarity-based)
 - Anti-naive techniques (skepticism, hype detection)
 - Depth calibration (adjust based on context)
 - Critical thinking framework (10-stage analysis)
+- Source bias recognition and counter-balancing
 - Working examples (LMCache research analyzed)
 
 **With this context, you can**:
-- Conduct multi-spectrum technical research
+- Extract topics from various inputs (URL, text, direct topic)
+- Capture POV (Point of View) and detect source BIAS
+- Conduct multi-spectrum technical research (10 or 11 spectra)
 - Challenge claims and surface limitations
 - Calibrate depth based on familiarity and goals
 - Provide honest, critical assessments
 - Go beyond marketing hype to realistic evaluation
+- Analyze POV claims post-research (POV-ANALYSIS.md)
+- Counter-balance source bias (BIAS-ANALYSIS.md)
 
 ---
 

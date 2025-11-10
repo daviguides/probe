@@ -26,7 +26,12 @@ Execute complete Probe research workflow autonomously:
 
 ## Input
 
-**Topic**: `<research-topic>` (e.g., "lmcache", "llm-cache", "vector-databases")
+**Input**: `<topic|url|text>` (various formats supported)
+- Direct topic: `lmcache`
+- URL: `https://linkedin.com/posts/...`
+- Text: `"Would caching help with multi-agent memory?"`
+- Text + URL: `"vLLM could help: [url]"`
+- Topic + POV: `lmcache --pov "I heard it's 15x faster"`
 
 **Optional Parameters**:
 - `familiarity`: never_heard | vaguely_familiar | somewhat_familiar | expert (default: never_heard)
@@ -36,6 +41,35 @@ Execute complete Probe research workflow autonomously:
 ---
 
 ## Execution Workflow
+
+### Phase 0: Extract Topic from Input (If Needed)
+
+**Execute if**: Input is URL, text, text+URL, or topic+--pov
+
+**Skip if**: Input is direct topic without --pov flag
+
+**Execute**:
+@./probe/prompts/extract-topic-from-input-workflow.md
+
+**Actions**:
+1. Detect input type (URL, text, topic, mixed)
+2. Extract topic (use WebFetch if URL)
+3. Extract POV (Point of View) if present
+4. Detect BIAS if URL source
+5. Confirm with user (topic, POV, BIAS)
+6. Store extraction object for later use
+
+**Output**:
+- `topic`: Normalized slug for research
+- `pov`: POV object (if exists) - stored for Phase 4
+- `bias`: BIAS object (if detected) - stored for Phase 4
+- `research_mode`: standard | comparative
+
+**CRITICAL**: POV and BIAS do NOT affect research workflow (Phases 1-3)
+- Research proceeds with standard methodology
+- POV and BIAS analyzed POST-research (Phase 4)
+
+**Proceed to Phase 1** after user confirmation.
 
 ### Phase 1: Load Research Methodology
 
@@ -48,7 +82,7 @@ This loads all Probe specs and context (SSOT reference pattern).
 ### Phase 2: Setup Research Environment
 
 Execute workflow:
-@~/.claude/probe/prompts/setup-research-environment-workflow.md
+@./probe/prompts/setup-research-environment-workflow.md
 
 **Actions**:
 1. Generate repo name: `./probe/scripts/generate-repo-name.sh "<topic>"`
@@ -61,7 +95,7 @@ Execute workflow:
 ### Phase 3: Conduct Multi-Spectrum Research
 
 Execute workflow:
-@~/.claude/probe/prompts/conduct-research-workflow.md
+@./probe/prompts/conduct-research-workflow.md
 
 **CRITICAL (Anti-Babysitting)**:
 - Execute ALL 10 spectra sequentially
@@ -91,17 +125,73 @@ Execute workflow:
 
 Create structured files in `~/work/sources/researchs/research-<topic>/`:
 
-**Minimum files**:
+**Always generate**:
 - `README.md` - Overview, TL;DR, key findings
-- `RESEARCH.md` - Complete multi-spectrum investigation
+- `RESEARCH.md` - Complete multi-spectrum investigation (10 or 11 spectra)
 - `FAQ.md` - Critical questions and honest answers
+
+**Conditional files** (based on extraction from Phase 0):
+- `POV-ANALYSIS.md` - If POV exists (Phase 4.5)
+- `BIAS-ANALYSIS.md` - If BIAS detected (Phase 4.6)
 
 **Optional files** (based on research depth):
 - `EXAMPLES.md` - Code examples and implementations
-- `COMPARISONS.md` - Comparative analysis
+- `COMPARISONS.md` - Comparative analysis (or integrated in Spectrum 11)
 - `BENCHMARKS.md` - Performance data
 
 **Format flexibility**: Structure can adapt to research findings, but MUST include all 10 spectra.
+
+### Phase 4.5: Generate POV-ANALYSIS.md (If POV Exists)
+
+**Trigger**: Check extraction object from Phase 0 → `pov.exists = true`
+
+**Skip if**: No POV (direct topic without --pov flag)
+
+**Execute**:
+1. Reference extraction object for POV claims
+2. Reference completed RESEARCH.md for findings
+3. Generate POV-ANALYSIS.md following @./probe/spec/pov-bias-analysis-spec.md
+
+**Actions**:
+- Reproduce original POV
+- List POV claims extracted
+- Assess each claim against research findings:
+  - ✅ CONFIRMED: Research verified claim
+  - ❌ REFUTED: Research contradicted claim
+  - ⚠️ PARTIALLY TRUE: Claim true with conditions/limitations
+- Answer original question (if POV is question)
+- Provide "POV vs Reality" summary
+- Give recommendation in light of POV
+
+**CRITICAL**: Do NOT re-research
+- Use completed RESEARCH.md findings
+- Focus on claim assessment
+- Dialogue with POV, not duplicate research
+
+### Phase 4.6: Generate BIAS-ANALYSIS.md (If BIAS Detected)
+
+**Trigger**: Check extraction object from Phase 0 → `bias.exists = true`
+
+**Skip if**: No BIAS (direct topic, user text without URL)
+
+**Execute**:
+1. Reference extraction object for bias characteristics
+2. Reference completed RESEARCH.md for counter-balancing
+3. Generate BIAS-ANALYSIS.md following @./probe/spec/pov-bias-analysis-spec.md
+
+**Actions**:
+- Identify source type (LinkedIn, vendor blog, academic, etc.)
+- Document bias characteristics (emphasis, omissions, reliability)
+- List specific bias indicators from source
+- Show what bias emphasized vs what research found
+- Show what bias omitted vs what research uncovered
+- Provide counter-balanced perspective
+- State what to trust vs verify vs ignore
+
+**CRITICAL**: Use research to counter-balance bias
+- Show what source didn't mention
+- Provide missing context and limitations
+- Balanced assessment based on complete research
 
 ### Phase 5: Validation
 
@@ -152,12 +242,41 @@ Return concise summary:
 [Context-specific assessment]
 [Does it fit? Yes/No/Partially + rationale]
 
+[If POV existed]
+## POV Assessment
+
+**Original POV**: "[POV text]"
+
+**Assessment**:
+- ✅ Confirmed: [what POV got right]
+- ❌ Refuted: [what POV got wrong]
+- ⚠️ Partially true: [what POV missed or oversimplified]
+
+**See POV-ANALYSIS.md for detailed claim-by-claim assessment.**
+
+[If BIAS detected]
+## Bias Counter-Balance
+
+**Source**: [LinkedIn post | Vendor blog | etc.]
+
+**What source emphasized**: [e.g., performance, innovation]
+**What source omitted**: [e.g., limitations, prerequisites, complexity]
+
+**Balanced perspective**: [key context missing from original source]
+
+**See BIAS-ANALYSIS.md for detailed counter-balancing.**
+
 ## Research Repository
 
 Full research available at:
 `~/work/sources/researchs/research-<topic>/`
 
 GitHub: `https://github.com/daviguides/research-<topic>` (private)
+
+**Generated files**:
+- README.md, RESEARCH.md, FAQ.md (always)
+[If POV]- POV-ANALYSIS.md
+[If BIAS]- BIAS-ANALYSIS.md
 
 ## Next Steps
 
