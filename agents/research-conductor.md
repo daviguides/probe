@@ -33,10 +33,28 @@ Execute complete Probe research workflow autonomously:
 - Text + URL: `"vLLM could help: [url]"`
 - Topic + POV: `lmcache --pov "I heard it's 15x faster"`
 
-**Optional Parameters**:
+**Optional Parameters** (planned, not yet implemented):
 - `familiarity`: never_heard | vaguely_familiar | somewhat_familiar | expert (default: never_heard)
 - `goal`: evaluation | learning | reporting | comparison (default: evaluation)
 - `depth`: quick | standard | exhaustive (default: standard)
+
+**Context Parameters** (optional, NEW):
+- `--role <file>`: Path to role & perspective markdown file
+  - Defines decision-making context (Staff Architect vs Developer vs PM)
+  - Adjusts research framing and recommendation style
+- `--approach <file>`: Path to product approach markdown file
+  - Defines industry, constraints, priorities (Manufacturing vs Startup)
+  - Adjusts scoring weights (Robustness 30% vs Performance 30%)
+- `--docs <path>`: Path to directory or file(s) to analyze
+  - Analyzes specified docs instead of generic web research
+  - Use for planned architecture analysis
+
+**Examples with context**:
+```
+/probe:research langgraph-agno-hybrid --role ~/.probe/context/role.md
+/probe:research vector-databases --approach ~/.probe/context/approach.md
+/probe:research lmcache --role ~/role.md --approach ~/approach.md --docs ~/project-docs/
+```
 
 ---
 
@@ -69,13 +87,64 @@ Execute complete Probe research workflow autonomously:
 - Research proceeds with standard methodology
 - POV and BIAS analyzed POST-research (Phase 4)
 
-**Proceed to Phase 1** after user confirmation.
+**Proceed to Phase 0.5** after user confirmation.
+
+### Phase 0.5: Parse and Load Context Parameters (If Provided)
+
+**Execute if**: User provided `--role`, `--approach`, or `--docs` flags
+
+**Skip if**: No context parameters provided (standard generic research)
+
+**Execute**:
+@./probe/prompts/load-context-parameters-workflow.md
+
+**Actions**:
+1. Parse command arguments for flags:
+   - Extract `--role <file>` path if present
+   - Extract `--approach <file>` path if present
+   - Extract `--docs <path>` if present
+
+2. Validate file paths:
+   - Expand home directory (`~` → actual path)
+   - Check if role file exists and is readable
+   - Check if approach file exists and is readable
+   - Check if docs path exists and is accessible
+
+3. Load context files (use `@` include pattern):
+   - If `--role` provided: Load role context via `@<role-file-path>`
+   - If `--approach` provided: Load approach context via `@<approach-file-path>`
+   - If `--docs` provided: Store docs path for analysis scope
+
+4. Store context for use in research:
+   - **Role context affects**: Framing, decision criteria, recommendation style
+   - **Approach context affects**: Scoring weights (robustness vs speed vs cost)
+   - **Docs path affects**: What to analyze (planned architecture vs current code)
+
+**Output**:
+- `context_loaded`: true/false
+- `role_context`: Loaded role & perspective (or null)
+- `approach_context`: Loaded product approach (or null)
+- `docs_scope`: Path to analyze (or null - means web research only)
+
+**IMPORTANT**: Context affects HOW research is framed and weighted, NOT WHETHER all 10 spectra are completed.
+
+**Error Handling**:
+- If file path invalid: Ask user for correct path or offer to skip
+- If file unreadable: Suggest using template from `probe/templates/research-context/`
+- Show context summary to user before proceeding
+
+**Proceed to Phase 1** after context loaded (or skipped).
 
 ### Phase 1: Load Research Methodology
 
 Execute: `/probe:load-research-context`
 
 This loads all Probe specs and context (SSOT reference pattern).
+
+**If context parameters provided (Phase 0.5)**:
+- **Role context loaded**: Affects framing (architect vs developer vs PM lens)
+- **Approach context loaded**: Affects scoring weights (see product-approach-template.md)
+- **Docs scope defined**: Affects analysis target (planned architecture vs web research)
 
 **DO NOT duplicate methodology inline** - reference via command.
 
@@ -117,7 +186,23 @@ Execute workflow:
 5. Integration → 6. Performance → 7. Use Cases → 8. Applicability →
 9. Implementation → 10. Critical FAQ
 
-**Depth calibration**: Apply based on familiarity + goal + topic type (from loaded methodology).
+**Depth calibration**: Apply based on familiarity + goal + topic type + **role context** (from loaded methodology + context parameters).
+
+**If role context loaded**:
+- **Architect role**: Focus on long-term trade-offs, maintainability, failure modes, 5-year horizon
+- **Developer role**: Focus on implementation complexity, debugging, learning curve, day-to-day impact
+- **Product Manager role**: Focus on time-to-market, feature delivery, opportunity costs, user impact
+- **Technical Leader role**: Focus on TCO, hiring impact, strategic risks, organizational alignment
+
+**If approach context loaded**:
+- **Adjust scoring weights** per approach context (robustness vs speed vs cost)
+- **Example**: Manufacturing (30% robustness, 25% maintainability) vs Startup (35% dev speed, 25% performance)
+- **Use weights from approach file** to score alternatives in applicability analysis
+
+**If docs scope provided**:
+- **Analyze specified docs/architecture** (NOT generic web research or current codebase)
+- **Focus on planned architecture** vs generic patterns
+- **Context-specific applicability** assessment based on actual system design
 
 **Output**: Complete research covering all 10 spectra.
 
@@ -130,9 +215,10 @@ Create structured files in `~/work/sources/researchs/research-<topic>/`:
 - `RESEARCH.md` - Complete multi-spectrum investigation (10 or 11 spectra)
 - `FAQ.md` - Critical questions and honest answers
 
-**Conditional files** (based on extraction from Phase 0):
+**Conditional files** (based on extraction from Phase 0 and context parameters):
 - `POV-ANALYSIS.md` - If POV exists (Phase 4.5)
 - `BIAS-ANALYSIS.md` - If BIAS detected (Phase 4.6)
+- `CONTEXT-SPECIFIC-ANALYSIS.md` - If context parameters provided (Phase 4.7)
 
 **Optional files** (based on research depth):
 - `EXAMPLES.md` - Code examples and implementations
@@ -192,6 +278,134 @@ Create structured files in `~/work/sources/researchs/research-<topic>/`:
 - Show what source didn't mention
 - Provide missing context and limitations
 - Balanced assessment based on complete research
+
+### Phase 4.7: Generate CONTEXT-SPECIFIC-ANALYSIS.md (If Context Provided)
+
+**Trigger**: Check if Phase 0.5 loaded context parameters → `context_loaded = true`
+
+**Skip if**: No context parameters (generic research)
+
+**Execute**:
+1. Reference loaded role context for framing
+2. Reference loaded approach context for scoring weights
+3. Reference docs scope for analysis target
+4. Reference completed RESEARCH.md for generic findings
+5. Generate CONTEXT-SPECIFIC-ANALYSIS.md
+
+**Content Structure**:
+
+```markdown
+# Context-Specific Analysis: <Topic> for <Role/Product>
+
+## Context Summary
+
+**Role & Perspective**:
+[Summary from role context file - job title, perspective, time horizon]
+
+**Product Approach**:
+[Summary from approach context file - industry, constraints, priorities]
+
+**Analysis Scope**:
+[What was analyzed - docs path or web research]
+
+---
+
+## Scoring Adjusted for Your Context
+
+| Criterion | Weight | Option A | Option B | Option C |
+|-----------|--------|----------|----------|----------|
+| Robustness | 30% | 9/10 | 6/10 | 7/10 |
+| Maintainability | 25% | 8/10 | 5/10 | 7/10 |
+| Dev Speed | 20% | 6/10 | 8/10 | 7/10 |
+| Performance | 15% | 8/10 | 9/10 | 8/10 |
+| Cost | 10% | 7/10 | 6/10 | 8/10 |
+
+**Total Scores** (weighted):
+- Option A: 8.15/10 ⭐ (RECOMMENDED)
+- Option B: 6.45/10
+- Option C: 7.30/10
+
+**Winner**: Option A by 0.85 points
+
+---
+
+## Recommendation for Your Context
+
+**For [Role] designing [Product Type] system**:
+[Specific recommendation based on role + approach]
+
+**Why this fits your context**:
+- [Context-specific reasoning tied to role constraints]
+- [How it addresses product approach priorities]
+- [Alignment with time horizon and risk tolerance]
+
+**Why alternatives don't fit**:
+- [Why other options score lower given your weights]
+
+---
+
+## ROI Analysis (Your Context)
+
+**Upfront Costs**:
+- Development: [X weeks, $Y cost]
+- Learning curve: [Z engineer-weeks]
+- Integration: [estimate based on docs analyzed]
+
+**Ongoing Costs**:
+- Maintenance: [$X/year]
+- Infrastructure: [$Y/year]
+- Team capacity: [Z FTE]
+
+**Benefits**:
+- [Quantified gains relevant to your context]
+- [Performance, reliability, or velocity improvements]
+
+**Break-even**: Year [X]
+
+**Verdict**: [Positive ROI | Marginal | Negative] for your context
+
+---
+
+## What This Means For You
+
+**Actionable guidance** tailored to role, approach, and docs analyzed:
+
+**If you're deciding on architecture**:
+- [Specific architectural guidance based on role context]
+- [Trade-offs that matter to your role]
+- [Failure modes relevant to your industry]
+
+**Given your constraints**:
+- [How recommendation fits product approach constraints]
+- [SLO/budget/timeline alignment]
+- [Risk assessment for your risk tolerance]
+
+**Next steps**:
+1. [Specific next action based on recommendation]
+2. [How to validate in your context]
+3. [Rollout strategy for your product approach]
+
+---
+
+## Context Comparison: Generic vs Your Situation
+
+| Aspect | Generic Research | Your Context |
+|--------|------------------|--------------|
+| Recommendation | [Generic rec] | [Context-specific rec] |
+| Primary concern | [Generic] | [Your priority from approach] |
+| Scoring emphasis | Balanced | [Your weights] |
+| Time horizon | Varies | [Your horizon from role] |
+
+**Why context matters**:
+[Explanation of how context changed the analysis and recommendation]
+```
+
+**CRITICAL**: Use research to provide context-specific analysis
+- Show how generic findings apply to THIS role/product
+- Adjust scoring weights per approach context
+- Provide actionable recommendations for decision-maker
+- Quantify ROI for specific constraints
+- Frame for role's decision-making needs (architect vs developer vs PM)
 
 ### Phase 5: Validation
 
@@ -277,6 +491,7 @@ GitHub: `https://github.com/daviguides/research-<topic>` (private)
 - README.md, RESEARCH.md, FAQ.md (always)
 [If POV]- POV-ANALYSIS.md
 [If BIAS]- BIAS-ANALYSIS.md
+[If Context]- CONTEXT-SPECIFIC-ANALYSIS.md
 
 ## Next Steps
 

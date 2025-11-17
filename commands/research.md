@@ -51,6 +51,51 @@
 /probe:research vector-databases --pov "Stakeholder recommended for RAG"
 ```
 
+**With context parameters** (role, product approach, docs to analyze):
+```
+/probe:research langgraph-agno-hybrid --role ~/.probe/context/accelveo-role.md
+/probe:research vector-databases --approach ~/.probe/context/manufacturing-approach.md
+/probe:research lmcache --role ~/role.md --approach ~/approach.md
+/probe:research microservices --docs ~/project-docs/architecture/
+/probe:research langgraph-agno-hybrid --role ~/.probe/context/role.md --approach ~/.probe/context/approach.md --docs ~/bespin-docs/summaries/
+```
+
+---
+
+## Context Parameters (Optional)
+
+**Purpose**: Tailor research to your specific role, product constraints, and analysis scope.
+
+**Parameters**:
+- `--role <file>`: Path to role & perspective markdown file
+  - Defines your decision-making context (Staff Architect vs Developer vs PM)
+  - Adjusts research framing and recommendation style
+  - Template: `probe/templates/research-context/role-template.md`
+
+- `--approach <file>`: Path to product approach markdown file
+  - Defines industry, constraints, priorities (Manufacturing vs Startup vs Enterprise)
+  - Adjusts scoring weights (Robustness 30% vs Performance 30%)
+  - Template: `probe/templates/research-context/product-approach-template.md`
+
+- `--docs <path>`: Path to directory or file(s) to analyze
+  - Analyzes specified docs instead of generic web research
+  - Use for planned architecture analysis (not current codebase)
+  - Can be single file, directory, or comma-separated list
+
+**When to use**:
+- ✅ **With context**: Designing for specific product, need actionable decision
+- ✅ **Generic**: Learning about topic, broad applicability
+
+**Example templates**:
+- Role: `probe/templates/research-context/examples/accelveo-role.md`
+- Approach: `probe/templates/research-context/examples/accelveo-product-approach.md`
+
+**Impact**:
+- Research framed for your role (architect vs developer lens)
+- Scoring weighted for your context (manufacturing robustness vs startup speed)
+- Analysis focused on your docs (planned architecture vs generic patterns)
+- Clear, quantitative recommendations (8.15 vs 5.95) instead of generic "probably not"
+
 ---
 
 ## What This Does
@@ -90,6 +135,7 @@ Launches autonomous research agent that:
 - Files (conditional):
   - `POV-ANALYSIS.md` - If POV provided (dialogues with original claim/question)
   - `BIAS-ANALYSIS.md` - If bias detected (counter-balances source bias)
+  - `CONTEXT-SPECIFIC-ANALYSIS.md` - If context parameters provided (tailored scoring & recommendations)
 - Summary: Key findings, recommendation, applicability
 
 ---
