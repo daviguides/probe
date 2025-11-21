@@ -84,7 +84,7 @@ Install as Claude Code plugin (assumes Gradient structure for plugins).
 ```
 
 **What happens**:
-1. Creates `~/work/sources/researchs/research-<topic>/`
+1. Creates `~/work/sources/probes/probe-<topic>/`
 2. Creates private GitHub repo `research-<topic>`
 3. Investigates all 10 research spectra
 4. Generates comprehensive research artifacts

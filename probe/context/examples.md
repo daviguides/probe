@@ -8,7 +8,7 @@
 
 Demonstrate Probe principles in action through concrete examples.
 
-Reference: `/Users/daviguides/work/sources/researchs/research-llm-cache`
+Reference: `/Users/daviguides/work/sources/probes/probe-llm-cache`
 
 ---
 

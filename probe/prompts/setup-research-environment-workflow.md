@@ -7,7 +7,7 @@
 ## Purpose
 
 Before conducting research, setup organized environment:
-1. Local directory: `~/work/sources/researchs/research-<topic>`
+1. Local directory: `~/work/sources/probes/probe-<topic>`
 2. Private GitHub repo: `research-<topic>`
 3. Git initialization and connection
 
@@ -95,7 +95,7 @@ git push -u origin main
 Return to caller:
 ```json
 {
-  "local_path": "~/work/sources/researchs/research-<topic>",
+  "local_path": "~/work/sources/probes/probe-<topic>",
   "github_repo": "daviguides/research-<topic>",
   "status": "ready"
 }
@@ -123,7 +123,7 @@ Return to caller:
 
 ## Success Criteria
 
-- [ ] Local directory created: `~/work/sources/researchs/research-<topic>/`
+- [ ] Local directory created: `~/work/sources/probes/probe-<topic>/`
 - [ ] Git initialized
 - [ ] GitHub private repo created
 - [ ] Local repo connected to GitHub (origin remote)

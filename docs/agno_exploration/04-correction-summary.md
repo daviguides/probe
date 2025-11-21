@@ -172,9 +172,9 @@ Durante revisão, foi identificado erro crítico na caracterização da integra�
 
 ## Arquivos Corrigidos
 
-1. ✅ `/Users/daviguides/work/sources/researchs/research-agno/AVA-EXECUTIVE-SUMMARY.md`
-2. ✅ `/Users/daviguides/work/sources/researchs/research-agno/AVA-VALIDATION-CHECKLIST.md`
-3. ✅ `/Users/daviguides/work/sources/researchs/research-agno/AVA-APPLICABILITY-ANALYSIS.md`
+1. ✅ `/Users/daviguides/work/sources/probes/probe-agno/AVA-EXECUTIVE-SUMMARY.md`
+2. ✅ `/Users/daviguides/work/sources/probes/probe-agno/AVA-VALIDATION-CHECKLIST.md`
+3. ✅ `/Users/daviguides/work/sources/probes/probe-agno/AVA-APPLICABILITY-ANALYSIS.md`
 4. ✅ `RESEARCH.md` (nenhuma correção necessária)
 5. ✅ `FAQ.md` (nenhuma correção necessária)
 

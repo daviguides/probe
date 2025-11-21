@@ -8,7 +8,7 @@
 
 Research context MUST be loaded before starting:
 
-@./probe/prompts/load-research-context.md
+@~/.claude/probe/prompts/load-research-context.md
 
 ---
 
@@ -62,7 +62,7 @@ Research context MUST be loaded before starting:
 
 ### Step 0.1: Execute Topic Extraction Workflow
 
-@./probe/prompts/extract-topic-from-input-workflow.md
+@~/.claude/probe/prompts/extract-topic-from-input-workflow.md
 
 **Input**: Raw user input
 **Output**: Extraction object with:
@@ -454,7 +454,7 @@ FAQ.md - Critical questions and answers
 **Execute**:
 1. Reference extraction object for POV claims
 2. Reference RESEARCH.md for findings
-3. Generate POV-ANALYSIS.md following @./probe/spec/pov-bias-analysis-spec.md
+3. Generate POV-ANALYSIS.md following @~/.claude/probe/spec/pov-bias-analysis-spec.md
 
 **Structure**:
 - Original POV reproduced
@@ -476,7 +476,7 @@ FAQ.md - Critical questions and answers
 **Execute**:
 1. Reference extraction object for bias characteristics
 2. Reference RESEARCH.md for counter-balancing
-3. Generate BIAS-ANALYSIS.md following @./probe/spec/pov-bias-analysis-spec.md
+3. Generate BIAS-ANALYSIS.md following @~/.claude/probe/spec/pov-bias-analysis-spec.md
 
 **Structure**:
 - Source type identified
@@ -504,7 +504,7 @@ research-<topic>/
 
 ### Step 4.5: Commit to Research Repository
 
-Commit all research files to `~/work/sources/researchs/research-<topic>/`.
+Commit all research files to `~/work/sources/probes/probe-<topic>/`.
 
 Push to GitHub private repo `research-<topic>`.
 
@@ -581,7 +581,7 @@ Research is **high-quality** when:
 
 Return to user:
 1. **Summary**: Key findings, recommendation, applicability assessment
-2. **Repository link**: Full research in `~/work/sources/researchs/research-<topic>/`
+2. **Repository link**: Full research in `~/work/sources/probes/probe-<topic>/`
 3. **Next steps** (if recommended for adoption): Integration plan outline
 
 **User can then**:

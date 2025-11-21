@@ -116,7 +116,7 @@
 
 ## Deliverable
 
-**Repository**: `/Users/daviguides/work/sources/researchs/research-lightweight-agent-frameworks/`
+**Repository**: `/Users/daviguides/work/sources/probes/probe-lightweight-agent-frameworks/`
 
 **Arquivos**:
 1. `README.md` - Executive summary + comparison matrix

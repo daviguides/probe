@@ -67,7 +67,7 @@ Execute complete Probe research workflow autonomously:
 **Skip if**: Input is direct topic without --pov flag
 
 **Execute**:
-@./probe/prompts/extract-topic-from-input-workflow.md
+@~/.claude/probe/prompts/extract-topic-from-input-workflow.md
 
 **Actions**:
 1. Detect input type (URL, text, topic, mixed)
@@ -96,7 +96,7 @@ Execute complete Probe research workflow autonomously:
 **Skip if**: No context parameters provided (standard generic research)
 
 **Execute**:
-@./probe/prompts/load-context-parameters-workflow.md
+@~/.claude/probe/prompts/load-context-parameters-workflow.md
 
 **Actions**:
 1. Parse command arguments for flags:
@@ -151,7 +151,7 @@ This loads all Probe specs and context (SSOT reference pattern).
 ### Phase 2: Setup Research Environment
 
 Execute workflow:
-@./probe/prompts/setup-research-environment-workflow.md
+@~/.claude/probe/prompts/setup-research-environment-workflow.md
 
 **Actions**:
 1. Generate repo name: `./probe/scripts/generate-repo-name.sh "<topic>"`
@@ -159,12 +159,12 @@ Execute workflow:
 3. Create GitHub private repo: `gh repo create ...`
 4. Initialize git and connect
 
-**Output**: `~/work/sources/researchs/research-<topic>/` ready
+**Output**: `~/work/sources/probes/probe-<topic>/` ready
 
 ### Phase 3: Conduct Multi-Spectrum Research
 
 Execute workflow:
-@./probe/prompts/conduct-research-workflow.md
+@~/.claude/probe/prompts/conduct-research-workflow.md
 
 **CRITICAL (Anti-Babysitting)**:
 - Execute ALL 10 spectra sequentially
@@ -208,7 +208,7 @@ Execute workflow:
 
 ### Phase 4: Generate Research Artifacts
 
-Create structured files in `~/work/sources/researchs/research-<topic>/`:
+Create structured files in `~/work/sources/probes/probe-<topic>/`:
 
 **Always generate**:
 - `README.md` - Overview, TL;DR, key findings
@@ -236,7 +236,7 @@ Create structured files in `~/work/sources/researchs/research-<topic>/`:
 **Execute**:
 1. Reference extraction object for POV claims
 2. Reference completed RESEARCH.md for findings
-3. Generate POV-ANALYSIS.md following @./probe/spec/pov-bias-analysis-spec.md
+3. Generate POV-ANALYSIS.md following @~/.claude/probe/spec/pov-bias-analysis-spec.md
 
 **Actions**:
 - Reproduce original POV
@@ -263,7 +263,7 @@ Create structured files in `~/work/sources/researchs/research-<topic>/`:
 **Execute**:
 1. Reference extraction object for bias characteristics
 2. Reference completed RESEARCH.md for counter-balancing
-3. Generate BIAS-ANALYSIS.md following @./probe/spec/pov-bias-analysis-spec.md
+3. Generate BIAS-ANALYSIS.md following @~/.claude/probe/spec/pov-bias-analysis-spec.md
 
 **Actions**:
 - Identify source type (LinkedIn, vendor blog, academic, etc.)
@@ -422,7 +422,7 @@ If validation fails: Fix gaps before proceeding.
 ### Phase 6: Commit and Push
 
 ```bash
-cd ~/work/sources/researchs/research-<topic>/
+cd ~/work/sources/probes/probe-<topic>/
 
 git add .
 git commit -m "research: complete multi-spectrum investigation of <topic>"
@@ -483,7 +483,7 @@ Return concise summary:
 ## Research Repository
 
 Full research available at:
-`~/work/sources/researchs/research-<topic>/`
+`~/work/sources/probes/probe-<topic>/`
 
 GitHub: `https://github.com/daviguides/research-<topic>` (private)
 

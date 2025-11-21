@@ -4,8 +4,8 @@
 
 **Complements:**
 - `/Users/daviguides/work/sources/bespin/bespin-docs/specs/writing-style-guide.md` (formatting/tone)
-- `/Users/daviguides/work/sources/researchs/research-multi-agent-execution-guardrails/response-directives.md` (structure)
-- `/Users/daviguides/work/sources/researchs/research-multi-agent-execution-guardrails/response-directives2.md` (argumentation)
+- `/Users/daviguides/work/sources/probes/probe-multi-agent-execution-guardrails/response-directives.md` (structure)
+- `/Users/daviguides/work/sources/probes/probe-multi-agent-execution-guardrails/response-directives2.md` (argumentation)
 
 **Date:** 2025-01-13
 

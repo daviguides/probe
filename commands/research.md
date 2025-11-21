@@ -126,7 +126,7 @@ Launches autonomous research agent that:
 10. Critical FAQ - Honest Q&A
 
 **Output artifacts**:
-- Local: `~/work/sources/researchs/research-<topic>/`
+- Local: `~/work/sources/probes/probe-<topic>/`
 - GitHub: Private repo `research-<topic>`
 - Files (always):
   - `README.md` - Overview + key findings
