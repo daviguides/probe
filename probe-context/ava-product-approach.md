@@ -1,6 +1,6 @@
-# Product Approach: AVA Phase 2 - Multi-Agent Manufacturing System
+# Product Approach: AVO Phase 2 - Multi-Agent Manufacturing System
 
-**Project**: AccelVeo Virtual Advisor (AVA) Phase 2
+**Project**: AccelVeo Virtual Advisor (AVO) Phase 2
 **Date**: 2025-11-10
 **Decision Framework**: Cost-driven, pragmatic architectural choices
 
@@ -74,7 +74,7 @@ Manufacturing operations - industrial equipment monitoring and optimization
 
 **Evaluation Criteria**:
 - **Graph-RAG**: Does it measurably improve retrieval over Vector-RAG?
-- **Relationship Traversal**: Are multi-hop queries required for AVA use cases?
+- **Relationship Traversal**: Are multi-hop queries required for AVO use cases?
 - **Historical Pattern Matching**: Can RCA similarity search work with Vector DB + metadata?
 - **Reasoning**: Is OWL/RDF inference necessary or is simple property graph sufficient?
 
@@ -109,7 +109,7 @@ Manufacturing operations - industrial equipment monitoring and optimization
 ## Current State & Decision Challenge
 
 ### Existing Choice
-**Neo4j** already selected in AVA-PHASE2-ARCHITECTURE.md with implementation code:
+**Neo4j** already selected in AVO-PHASE2-ARCHITECTURE.md with implementation code:
 ```python
 neo4j_knowledge = Neo4jKnowledgeBase(
     graph_url="bolt://localhost:7687",
@@ -135,7 +135,7 @@ neo4j_knowledge = Neo4jKnowledgeBase(
 ## Success Criteria for Research
 
 ### Must Answer
-1. **Priority 1**: Is KG necessary or is Vector DB sufficient for AVA Phase 2 use cases?
+1. **Priority 1**: Is KG necessary or is Vector DB sufficient for AVO Phase 2 use cases?
 2. **Priority 2**: If KG needed, which alternative provides best cost/functionality/complexity balance?
 3. **Priority 3**: What are implementation risks and mitigation strategies?
 
@@ -157,7 +157,7 @@ neo4j_knowledge = Neo4jKnowledgeBase(
 ### Known Biases to Challenge
 1. **Academic Over-Engineering**: Formal ontologies (OWL/RDF) sound sophisticated but are they needed?
 2. **Sunk Cost**: If team already invested in Neo4j learning, might resist alternatives
-3. **Feature Maximalism**: "KG can do X, Y, Z" doesn't mean AVA Phase 2 NEEDS X, Y, Z
+3. **Feature Maximalism**: "KG can do X, Y, Z" doesn't mean AVO Phase 2 NEEDS X, Y, Z
 4. **Marketing Hype**: Graph databases are trendy - separate hype from practical value
 
 ### Required Skepticism

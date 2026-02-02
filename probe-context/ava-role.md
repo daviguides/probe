@@ -18,7 +18,7 @@
 
 ## Technical Context
 
-### Current Project: AVA Phase 2
+### Current Project: AVO Phase 2
 - Building 10-agent multi-agent system using Agno v2
 - Timeline: 2-3 weeks for Phase 2 implementation
 - Framework: Agno v2 with hybrid Teams + Workflows orchestration
@@ -26,7 +26,7 @@
 
 ### Target Performance
 - Latency: 1-5s total response time (within 3-5s P95 SLO)
-- Agents: 1 orchestrator (AVA) + 9 specialists (Planner, Reasoner, Maintenance, Compliance, Data, SOP Generator, Aggregator, Context Manager, Evaluator)
+- Agents: 1 orchestrator (AVO) + 9 specialists (Planner, Reasoner, Maintenance, Compliance, Data, SOP Generator, Aggregator, Context Manager, Evaluator)
 
 ---
 
@@ -42,7 +42,7 @@
 **Evaluation Criteria**:
 - Do we need relationship traversal and reasoning?
 - Is semantic similarity sufficient?
-- What query patterns are truly necessary for AVA agents?
+- What query patterns are truly necessary for AVO agents?
 
 ### Priority 2: IF KG is necessary (YELLOW)
 **Question**: Which lightweight alternative to expensive Neo4j Enterprise?
@@ -103,7 +103,7 @@
 ## Current State & Bias Awareness
 
 ### What We Know
-- **Neo4j already selected** in AVA-PHASE2-ARCHITECTURE.md
+- **Neo4j already selected** in AVO-PHASE2-ARCHITECTURE.md
 - **Rationale document exists** (knowledge-graph-ontology-rationale.md) with 1034 lines of justification
 - **Post-decision justification suspected** - document created after architectural choice
 
@@ -111,7 +111,7 @@
 - Was decision driven by technical necessity or academic preference?
 - Are there confirmation biases in the rationale?
 - Were alternatives quantitatively compared or dismissed qualitatively?
-- Does manufacturing domain context from AccelVeo v2 apply to AVA Phase 2?
+- Does manufacturing domain context from AccelVeo v2 apply to AVO Phase 2?
 
 ### Research Mandate
 **Challenge the existing decision**. Validate if KG is truly needed or if simpler/cheaper alternatives suffice.
